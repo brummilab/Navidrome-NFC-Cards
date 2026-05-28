@@ -1,218 +1,173 @@
 // ============================================================
-//  Navidrome NFC Box
-//  Gehäuse für Raspberry Pi 3 Model B + ACR1252U NFC Reader
+//  Navidrome NFC Box  v2
+//  Gehäuse: Raspberry Pi 3 Model B  +  ACR1252U NFC Reader
 // ============================================================
-//  Zwei Teile: Unterteil (bottom) + Deckel (lid)
-//  Drucken ohne Support, flach auf dem Druckbett
-//  Empfohlen: PLA, 0.2 mm Schicht, 3 Perimeter, 20 % Infill
+//  2 Druckteile – kein Support nötig, flach auf Druckbett
+//  PLA · 0.2 mm Schicht · 3 Perimeter · 20 % Infill
 //
-//  ┌─────────────────────────┐  ← Deckel:  NFC-Reader eingelassen
-//  │  ┌─────────────────┐    │
-//  │  │  ACR1252U       │    │    Karte drauflegen = Musik startet
-//  │  └─────────────────┘    │
-//  └─────────────────────────┘
-//  ┌─────────────────────────┐  ← Unterteil: Raspberry Pi 3B
-//  │  [Pi3B]  Abstandshalter │
-//  │  USB │ ETH    PWR │ AUD │
-//  └─────────────────────────┘
+//  Unterteil: Pi auf Abstandshaltern, Port-Ausschnitte
+//  Deckel   : ACR1252U liegt oben eingelassen → Karte drauflegen
 //
-//  Hinweis: Maße vor dem Druck mit Messschieber am eigenen Pi prüfen!
+//  ! Pi-Montagelöcher und Port-Positionen mit Messschieber prüfen !
 // ============================================================
 
 $fn = 48;
 
+// ── Wandstärken ──────────────────────────────────────────────
+WALL  = 2.5;   // Wandstärke
+FLOOR = 2.5;   // Bodenstärke
+GAP   = 0.3;   // Spiel Deckel ↔ Unterteil
 
-// ============================================================
-//  PARAMETER – hier anpassen wenn nötig
-// ============================================================
+// ── Raspberry Pi 3B  (PCB 85 × 56 mm) ───────────────────────
+PI_W = 85;
+PI_D = 56;
+PI_SH = 5;     // Abstandshalter-Höhe (Standoff)
+PI_BH = 22;    // Bauraum Pi + Kabel
 
-// Wandstärke & Spielraum
-WALL   = 2.5;   // Wandstärke
-FLOOR  = 2.5;   // Bodenstärke
-GAP    = 0.3;   // Spiel Pi ↔ Wand / Deckel ↔ Unterteil
+// Montagelöcher M2.5 (von PCB-Ecke, USB-Seite = hinten)
+PI_HOLES = [ [3.5,3.0], [3.5,52.5], [61.5,3.0], [61.5,52.5] ];
 
-// Raspberry Pi 3B  (PCB = 85 × 56 mm)
-PI_W  = 85;
-PI_D  = 56;
-PI_STANDOFF_H = 5;    // Abstandshalter-Höhe (Pi hebt über Boden)
-PI_BODY_H     = 22;   // Bauraum für Pi + Kühlkörper + Kabel
-
-// Pi Montagelöcher M2.5 (Position von PCB-Ecke, USB-Seite hinten)
-// ! mit Messschieber am eigenen Board prüfen !
-PI_HOLES = [ [3.5, 3.0], [3.5, 52.5], [61.5, 3.0], [61.5, 52.5] ];
-
-// ACR1252U NFC Reader  (ca. 98 × 65 × 8.5 mm)
+// ── ACR1252U  (≈ 98 × 65 × 8.5 mm) ─────────────────────────
 NFC_W = 98;
 NFC_D = 65;
-NFC_H = 8.5;   // Höhe (ohne USB-Stecker-Überhang)
+NFC_H = 8.5;   // Tiefe des Einlasses
 NFC_R = 5;     // Eckenradius
 
-// Innenmaß Box (Pi + Kabelpuffer)
-INNER_W = PI_W + 15;   // = 100 mm
-INNER_D = PI_D + 14;   // =  70 mm
+// ── Box-Innenmaß ─────────────────────────────────────────────
+INNER_W = PI_W + 15;   // 100 mm  (Pi + Kabelpuffer)
+INNER_D = PI_D + 14;   //  70 mm
 
-// Pi zentriert in Box
-PI_X = (INNER_W - PI_W) / 2;
+PI_X = (INNER_W - PI_W) / 2;   // Pi zentriert
 PI_Y = (INNER_D - PI_D) / 2;
 
-// Außenmaß
-OUTER_W = INNER_W + 2*WALL;   // ≈ 105 mm
-OUTER_D = INNER_D + 2*WALL;   // ≈  75 mm
-OUTER_H = FLOOR + PI_STANDOFF_H + PI_BODY_H;  // ≈  30 mm
+OUTER_W = INNER_W + 2*WALL;    // 105 mm
+OUTER_D = INNER_D + 2*WALL;    //  75 mm
+OUTER_H = FLOOR + PI_SH + PI_BH;  // ≈ 30 mm
 
-// Deckel-Gesamthöhe
-LID_H = NFC_H + WALL + 1;     // ≈  12 mm
-
-// Reibschluss-Rand (Deckel sitzt 4 mm tief im Unterteil)
-SNAP_DEPTH = 4;
+// ── Deckel ───────────────────────────────────────────────────
+// Plattendicke muss >= NFC_H + 2 sein damit Einlass Boden hat
+LID_PLATE = NFC_H + 2;   // 10.5 mm  (2 mm Material unter NFC)
+LIP_W     = 1.8;          // Lippendicke
+LIP_D     = 5.0;          // Lippentiefe (greift in Unterteil)
 
 
 // ============================================================
-//  HILFSFUNKTIONEN
+//  Hilfsfunktionen
 // ============================================================
 
 module rbox(w, d, h, r=4) {
-    // Abgerundete Box
+    // Abgerundete Box – manifold, alle Ecken ≥ r
+    r_ = min(r, w/2-0.01, d/2-0.01);
     hull()
-        for (x = [r, w-r], y = [r, d-r])
-            translate([x, y, 0]) cylinder(r=r, h=h);
+        for (x=[r_, w-r_], y=[r_, d-r_])
+            translate([x, y, 0]) cylinder(r=r_, h=h);
 }
 
 module standoff(h, od=6, id=2.8) {
-    // Zylindrischer Abstandshalter mit M2.5-Bohrung
     difference() {
         cylinder(d=od, h=h);
         cylinder(d=id, h=h+0.1);
     }
 }
 
-module port_slot(w, h, depth=WALL+2) {
-    // Einfacher rechteckiger Port-Ausschnitt
-    cube([w, depth, h]);
-}
-
 
 // ============================================================
 //  UNTERTEIL
 // ============================================================
-// USB-Ports zeigen nach HINTEN  (+Y)
-// Power/HDMI/Audio zeigen nach VORNE (-Y)
-// SD-Karte zeigt nach RECHTS (+X)
-
 module bottom() {
-    difference() {
-        // ── Außenkörper ──────────────────────────────────────
-        rbox(OUTER_W, OUTER_D, OUTER_H);
+    // Basis-Z für Port-Ausschnitte (Unterkante der Pi-Ports)
+    pz = FLOOR + PI_SH;
+    px = WALL + PI_X;
+    py = WALL + PI_Y;
 
-        // ── Innenraum ────────────────────────────────────────
+    difference() {
+        rbox(OUTER_W, OUTER_D, OUTER_H, r=4);
+
+        // Innenraum
         translate([WALL, WALL, FLOOR])
             cube([INNER_W, INNER_D, OUTER_H]);
 
-        // ── Port-Ausschnitte ─────────────────────────────────
-        port_z = FLOOR + PI_STANDOFF_H + 0.5;   // Unterkante Ports
-        px = WALL + PI_X;                        // Pi-Offset X
-        py = WALL + PI_Y;                        // Pi-Offset Y
+        // ── Ports VORNE (y=0): Power · HDMI · Audio ──────────
+        // Micro-USB Power  (~x=6, b=11, h=5)
+        translate([px+5,   -0.1, pz+0.5]) cube([11, WALL+0.2, 5.5]);
+        // HDMI             (~x=29, b=15, h=8)
+        translate([px+28,  -0.1, pz    ]) cube([15, WALL+0.2, 8.5]);
+        // 3.5 mm Audio     (~x=49, b=8,  h=8)
+        translate([px+49,  -0.1, pz+1  ]) cube([9,  WALL+0.2, 8  ]);
 
-        // VORNE (Y=0): Micro-USB Power, HDMI, 3.5mm Audio
-        // Micro USB Power  (≈ x=6..17 vom Pi-Rand, 4 mm hoch)
-        translate([px + 6,  -0.1, port_z])
-            port_slot(11, 5);
+        // ── Ports HINTEN (y=OUTER_D): 4×USB + Ethernet ───────
+        translate([px-1, OUTER_D-WALL-0.1, pz])
+            cube([PI_W+2, WALL+0.2, 18]);
 
-        // HDMI  (≈ x=29..45, 7.5 mm hoch)
-        translate([px + 29, -0.1, port_z])
-            port_slot(16, 8);
+        // ── SD-Karte RECHTS (x=OUTER_W) ──────────────────────
+        translate([OUTER_W-WALL-0.1, py+37, 0])
+            cube([WALL+0.2, 16, FLOOR+4]);
 
-        // 3.5 mm Audio  (≈ x=50..59, 8 mm hoch)
-        translate([px + 50, -0.1, port_z + 1])
-            port_slot(8, 8);
-
-        // HINTEN (Y=OUTER_D): 4× USB + Ethernet  (volle Breite)
-        translate([px - 1, OUTER_D - WALL - 0.1, port_z])
-            port_slot(PI_W + 2, 17);
-
-        // RECHTS (X=OUTER_W): SD-Karte (sitzt tief, Höhe ~3 mm)
-        translate([OUTER_W - WALL - 0.1, py + 38, 0])
-            rotate([0, 0, 0])
-            port_slot(16, FLOOR + 4, WALL+2);
-
-        // ── Lüftungsschlitze (Boden) ─────────────────────────
-        for (i = [0:4])
-            translate([WALL + 8 + i*13, WALL + 10, -0.1])
-                cube([7, INNER_D - 20, FLOOR + 0.2]);
-
-        // ── Reibschluss-Nut für Deckelrand ───────────────────
-        // Deckel sitzt mit SNAP_DEPTH mm Rand INNEN im Unterteil
-        // → keine weitere Nut nötig, Rand ist schon da
+        // ── Lüftungsschlitze Boden ────────────────────────────
+        for (i=[0:4])
+            translate([WALL+8+i*13, WALL+10, -0.1])
+                cube([7, INNER_D-20, FLOOR+0.2]);
     }
 
-    // ── Abstandshalter für Pi ─────────────────────────────────
-    translate([WALL + PI_X, WALL + PI_Y, FLOOR])
-        for (h = PI_HOLES)
-            translate(h) standoff(PI_STANDOFF_H);
+    // Abstandshalter Pi
+    translate([WALL+PI_X, WALL+PI_Y, FLOOR])
+        for (h=PI_HOLES)
+            translate(h) standoff(PI_SH);
 }
 
 
 // ============================================================
 //  DECKEL
 // ============================================================
-// Liegt umgedreht auf dem Druckbett (Außenfläche unten).
-// Der NFC-Reader wird von oben eingesetzt.
-// USB-Kabel vom NFC-Reader läuft durch Schlitz auf Pi-USB-Port.
-
 module lid() {
+    // NFC-Einlass: zentriert auf Deckplatte
+    nx = (OUTER_W - NFC_W) / 2;
+    ny = (OUTER_D - NFC_D) / 2;
+
+    // Innen-Lippe: passt in Unterteil-Hohlraum
+    lw = INNER_W - 2*GAP;
+    ld = INNER_D - 2*GAP;
+
     difference() {
         union() {
-            // ── Deckfläche ────────────────────────────────────
-            rbox(OUTER_W, OUTER_D, LID_H);
+            // Deckplatte
+            rbox(OUTER_W, OUTER_D, LID_PLATE, r=4);
 
-            // ── Einführrand (sitzt in Unterteil-Innenraum) ────
-            // Außenmaß = INNER_W - 2*GAP, Tiefe = SNAP_DEPTH
-            translate([WALL - GAP, WALL - GAP, 0])
+            // Zentrierlippe nach unten  (geht in Unterteil)
+            translate([WALL+GAP, WALL+GAP, -LIP_D])
                 difference() {
-                    rbox(INNER_W + 2*GAP, INNER_D + 2*GAP, SNAP_DEPTH + WALL, r=3);
-                    translate([WALL + GAP, WALL + GAP, -0.1])
-                        rbox(INNER_W - 2*WALL, INNER_D - 2*WALL, SNAP_DEPTH + WALL + 0.2, r=2);
+                    rbox(lw, ld, LIP_D, r=3);
+                    translate([LIP_W, LIP_W, -0.1])
+                        rbox(lw-2*LIP_W, ld-2*LIP_W, LIP_D+0.2, r=2);
                 }
         }
 
-        // ── NFC-Reader Einlass (zentriert auf Deckel) ─────────
-        nfc_x = (OUTER_W - NFC_W) / 2;
-        nfc_y = (OUTER_D - NFC_D) / 2;
-        translate([nfc_x, nfc_y, WALL])
-            rbox(NFC_W, NFC_D, NFC_H + 1, r=NFC_R);
+        // NFC-Reader Einlass von oben
+        // Boden des Einlasses liegt 2 mm über Plattenunterkante → manifold
+        translate([nx, ny, LID_PLATE-NFC_H])
+            rbox(NFC_W, NFC_D, NFC_H+0.1, r=NFC_R);
 
-        // ── Kabelschlitz: USB-Kabel NFC → Pi ──────────────────
-        // Liegt an der Hinterkante des NFC-Readers
-        translate([OUTER_W/2 - 6, OUTER_D - WALL - SNAP_DEPTH - 16, WALL - 0.1])
-            cube([12, 15, NFC_H + 0.2]);
+        // Kabelschlitz (USB-Kabel vom NFC-Reader nach unten)
+        // Liegt an der HINTEREN Kante des NFC-Einlasses, geht durch Platte+Lippe
+        translate([OUTER_W/2-6, ny+NFC_D-1, -LIP_D-0.1])
+            cube([12, WALL+2, LID_PLATE+LIP_D+0.2]);
 
-        // ── Lüftungsschlitze (Deckel, seitlich) ───────────────
-        for (i = [0:3])
-            translate([WALL + 6, WALL + 8 + i*14, LID_H - 1])
-                cube([OUTER_W - 2*WALL - 12, 8, 2]);
+        // Lüftungsschlitze (flache Nuten in Deckfläche, 1 mm tief)
+        for (i=[0:3])
+            translate([WALL+8, WALL+8+i*13, LID_PLATE-1.1])
+                cube([OUTER_W-2*WALL-16, 7, 1.2]);
     }
-
-    // ── NFC-Reader Rahmen / Einfassung ────────────────────────
-    nfc_x = (OUTER_W - NFC_W) / 2;
-    nfc_y = (OUTER_D - NFC_D) / 2;
-    translate([nfc_x - 1.5, nfc_y - 1.5, WALL + NFC_H])
-        difference() {
-            rbox(NFC_W + 3, NFC_D + 3, 1.5, r=NFC_R + 1.5);
-            translate([1.5, 1.5, -0.1])
-                rbox(NFC_W, NFC_D, 2, r=NFC_R);
-        }
 }
 
 
 // ============================================================
-//  AUSGABE
+//  AUSGABE  (beide Teile nebeneinander)
 // ============================================================
-// Beide Teile nebeneinander – zum Slicen in richtige Lage drehen!
-//   Unterteil: steht aufrecht (Boden unten)  ✓
-//   Deckel:    umdrehen! (Außenfläche = Druckbett)
+// Unterteil: steht aufrecht, Boden = Druckbett  ✓
+// Deckel:    muss beim Slicen um 180° gedreht werden (Außenfläche unten)
 
 color("SteelBlue",  0.9) bottom();
 
-translate([OUTER_W + 20, 0, LID_H])
-    rotate([180, 0, 0])
+translate([OUTER_W+20, 0, LID_PLATE+LIP_D])
+    rotate([180,0,0])
         color("LightSkyBlue", 0.9) lid();
