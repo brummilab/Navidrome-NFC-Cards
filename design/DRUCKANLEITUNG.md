@@ -8,12 +8,12 @@ Diese Anleitung ist für jemanden gedacht, der nur die Teile drucken soll – ke
 
 ## 1. Was wird gedruckt?
 
-Zwei Teile aus einer Datei:
+Zwei Teile – die fertigen STL-Dateien liegen direkt im Ordner `design/`:
 
-| Teil | Beschreibung | ca. Maße | ca. Druckzeit* |
-|------|--------------|----------|----------------|
-| **Unterteil** (`bottom`) | Wanne, hält den Raspberry Pi | 107 × 75 × 24 mm | ~3 h |
-| **Deckel** (`lid`) | Aufnahme für den NFC-Reader, Karte wird oben aufgelegt | 112 × 80 × 25 mm | ~3,5 h |
+| Datei | Beschreibung | Maße | ca. Druckzeit* |
+|-------|--------------|------|----------------|
+| [`unterteil.stl`](unterteil.stl) | Wanne, hält den Raspberry Pi | 94 × 65 × 24 mm | ~3 h |
+| [`deckel.stl`](deckel.stl) | Aufnahme für den NFC-Reader, Karte wird oben aufgelegt | 104 × 71 × 23 mm | ~3,5 h |
 
 \* grobe Schätzung bei 0,2 mm / 20 % Infill – Bambu Studio zeigt den genauen Wert.
 
@@ -21,14 +21,19 @@ Beide Teile passen einzeln locker aufs Druckbett (256 × 256 mm).
 
 ---
 
-## 2. STL-Dateien erzeugen (falls noch nicht vorhanden)
+## 2. STL-Dateien (schon fertig im Repo)
 
-Wer nur fertige STLs bekommt, überspringt diesen Schritt.
+Die beiden `.stl` liegen bereits in `design/` – einfach in Bambu Studio laden, fertig.
 
-1. [OpenSCAD](https://openscad.org/) installieren und `design/gehaeuse.scad` öffnen.
-2. Oben im Code `PART` setzen und mit **F6** rendern, dann **Datei → Exportieren → STL**:
-   - `PART = "bottom";` → `unterteil.stl`
-   - `PART = "lid";` → `deckel.stl`
+**Selbst neu erzeugen** (nur falls Maße angepasst wurden):
+
+- Per Python (kein OpenSCAD nötig):
+  ```bash
+  pip install numpy scipy trimesh manifold3d
+  python3 design/build_stl.py
+  ```
+- Oder per [OpenSCAD](https://openscad.org/): `design/gehaeuse.scad` öffnen,
+  `PART = "bottom";` bzw. `PART = "lid";` setzen → **F6** → **Datei → Exportieren → STL**.
 
 ---
 
@@ -51,39 +56,56 @@ Wer nur fertige STLs bekommt, überspringt diesen Schritt.
 
 ## 4. Ausrichtung auf dem Druckbett
 
-Beide Teile werden **ohne Drehung** und **ohne Support** gedruckt:
+Beide Teile werden **ohne Support** gedruckt – aber auf die Ausrichtung achten:
 
 ```
-UNTERTEIL                         DECKEL
-┌───────────────┐                 Lese-Mulde zeigt nach OBEN
+UNTERTEIL  (Boden unten)          DECKEL  (Dach UNTEN aufs Bett!)
+┌───────────────┐                   ↑ Rock-Öffnung zeigt nach OBEN
 │   offen oben  │                 ┌───────────────┐
-│               │                 │   Mulde       │  ← Reader + Karte
-│   Boden unten │                 │               │
-└───────────────┘                 └───────────────┘
-  ↑ Boden aufs Bett                 ↑ Rock-Rand aufs Bett
+│               │                 │   Rock        │
+│   Boden unten │                 ├───────────────┤
+└───────────────┘                 │   Dach        │  ← glatte Seite
+  ↑ Boden aufs Bett               └───────────────┘  liegt auf dem Bett
 ```
 
-- **Unterteil**: flacher Boden liegt auf dem Druckbett, die offene Seite zeigt nach oben.
-- **Deckel**: der untere Rand (der „Rock") liegt auf dem Druckbett, die Mulde für den Reader zeigt nach oben.
+- **Unterteil**: flacher Boden auf dem Druckbett, offene Seite nach oben. (Standard, keine Drehung.)
+- **Deckel**: um **180° kippen**, sodass das **Dach (die glatte Oberseite, auf die später die Karte kommt) flach auf dem Druckbett liegt** und die Rock-Öffnung nach oben zeigt.
 
-Der Deckel hat einen 8 mm hohen Überhang am Rock – das druckt der P1S problemlos ohne Support (steile Innenwand).
+> **Warum gekippt?** Läge der Deckel mit dem Rock auf dem Bett, müsste der Drucker das Dach als ~100 mm breite Brücke in der Luft drucken → braucht Support. Mit dem Dach nach unten gibt es nur eine winzige 2,3-mm-Auflage-Leiste als Überhang – die druckt der P1S problemlos ohne Support.
+>
+> Die Dach-Oberseite bekommt dadurch die Struktur des Druckbetts (bei Textured PEI eine schöne matte Optik). Die NFC-Lesefunktion stört das nicht.
+
+In Bambu Studio: Teil markieren → Taste **R** (Rotieren) → um die X-Achse 180° → „auf Platte legen" (Taste **P** / Drop to bed).
 
 ---
 
 ## 5. Drucken
 
 1. STLs in Bambu Studio laden (beide auf eine Platte oder nacheinander).
-2. Profil wie in Schritt 3 wählen.
-3. **Slicen** → Vorschau prüfen → an den Drucker senden.
+2. Deckel wie oben um 180° kippen, Unterteil bleibt wie es ist.
+3. Profil wie in Schritt 3 wählen.
+4. **Slicen** → Vorschau prüfen → an den Drucker senden.
 
 ---
 
-## 6. Nach dem Druck
+## 6. Zusammenbau
 
-- Stützmaterial gibt es keins, nur ggf. Brim entfernen.
-- **Passt der Deckel nicht** (zu stramm oder zu locker)? In `gehaeuse.scad` den Parameter `GAP` anpassen:
-  - zu stramm → `GAP` erhöhen (z. B. 0.2 → 0.3)
-  - zu locker → `GAP` verringern (z. B. 0.2 → 0.1)
-  - neu rendern, neu drucken.
+1. **Pi einsetzen**: Raspberry Pi mit 4× M2.5-Schrauben auf die Abstandshalter im Unterteil schrauben. Anschlüsse zeigen zu den passenden Wandausschnitten (USB/LAN rechts, Power/HDMI/Audio vorne, SD-Karte links mittig).
+2. **Reader einlegen**: ACR1252U von unten in die Deckel-Mulde legen (Geräteoberseite Richtung Dach). Er ruht auf der umlaufenden Auflage-Leiste, das Dach hält ihn nach oben.
+3. **Kabel**: USB-Kabel des Readers durch die Kabel-Aussparung nach unten führen und am Pi einstecken.
+4. **Schließen**: Deckel über das Unterteil stülpen – der Rock greift 8 mm über die Wände und zentriert alles.
+
+**Karte abspielen:** NFC-Karte einfach oben auf den Deckel legen – der Reader liest durch das 1,5 mm dünne Dach.
+
+---
+
+## 7. Nach dem Druck / Feintuning
+
+- Kein Stützmaterial, höchstens Brim abziehen.
+- **Deckel zu stramm / zu locker?** In `design/gehaeuse.scad` den Parameter `GAP` anpassen
+  (zu stramm → erhöhen, z. B. 0.2 → 0.3; zu locker → verringern), dann STL neu erzeugen
+  (`python3 design/build_stl.py`) und neu drucken.
+- **Port-Ausschnitt trifft nicht?** Die mit `(*)` markierten Maße in der `.scad` an den
+  eigenen Pi anpassen.
 
 Fertig. 🎉

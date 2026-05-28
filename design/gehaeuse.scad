@@ -1,96 +1,100 @@
 // ============================================================
-//  Navidrome NFC Box  ·  v5
+//  Navidrome NFC Box  ·  v6
 //  Raspberry Pi 3 Model B (v1.2)  +  ACR1252U NFC-Reader
 // ============================================================
-//  Konzept (wie Toniebox):
-//    · Unterteil  : Pi liegt auf 4 Abstandshaltern, Ports seitlich
-//    · Deckel     : ACR1252U liegt OBEN eingelassen, Karte drauflegen
-//                   Deckel stülpt sich mit Außenrock über das Unterteil
+//  Konzept (Toniebox-Stil):
+//    · Unterteil : SCHMAL, exakt für den Pi. Alle Anschlüsse
+//                  liegen bündig an den Wänden (auch SD links mittig).
+//    · Deckel    : BREITER, hält den ACR1252U face-up. Stülpt sich
+//                  mit Rock über das Unterteil und überlappt es leicht.
+//                  Karte oben auflegen → NFC liest durch 1.5 mm Dach.
 //
-//  ── Bambu Lab P1S – empfohlene Einstellungen (Bambu Studio) ──
-//  Filament : PLA (Standard)  oder  PETG (steifer, wärmebeständiger)
-//  Profil   : 0.20 mm Standard
-//  Wände    : 3
-//  Infill   : 20 % (Gyroid)
-//  Support  : KEIN Support nötig
-//  Plate    : Engineering Plate  oder  Cool Plate
+//  Reader-Halterung:
+//    Der Reader liegt in einer Mulde und ruht auf einer umlaufenden
+//    Auflage-Leiste (Innenraum verengt sich unter der Mulde). Nach
+//    oben hält ihn das Dach. Eingelegt wird er von unten, bevor der
+//    Deckel aufs Unterteil kommt.
 //
-//  Druckreihenfolge:
-//    1. Unterteil: flache Seite aufs Druckbett, keine Rotation
-//    2. Deckel   : flache Seite (Rock-Rand) aufs Druckbett,
-//                  Lese-Mulde zeigt nach OBEN → kein Support
+//  ── Bambu Lab P1S – Druckeinstellungen ──────────────────────
+//    Filament : PLA Basic  oder  PETG HF (steifer/wärmefester)
+//    Profil   : 0.20 mm Standard · 3 Wände · 20 % Gyroid
+//    Support  : KEINER nötig
 //
-//  STL-Export: PART = "bottom"  bzw.  "lid"  setzen → F6 → STL.
+//  Druck-Ausrichtung (wichtig, sonst Support nötig!):
+//    · Unterteil : Boden aufs Druckbett (offene Seite nach oben)
+//    · Deckel    : DACH (glatte Oberseite) aufs Druckbett,
+//                  Rock zeigt nach OBEN  →  keine Brücken, kein Support
 //
-//  ►►  Alle mit (*) markierten Maße am eigenen Pi mit dem
-//      Messschieber prüfen und ggf. anpassen!  ◄◄
+//  STL-Export: PART = "bottom" bzw. "lid" → F6 → als STL exportieren.
+//
+//  ►►  Mit (*) markierte Port-Maße am eigenen Pi prüfen!  ◄◄
 // ============================================================
 
 $fn = 64;
 PART = "both";          // "bottom" | "lid" | "both"
 
 
-// ── Globale Wandstärken / Spiel ──────────────────────────────
-WALL  = 2.5;            // Seitenwände Unterteil
-FLOOR = 2.5;            // Boden Unterteil
-TOP   = 1.5;            // Deckel-Dach über dem Reader (NFC liest durch!)
+// ── Wandstärken / Spiel ──────────────────────────────────────
+WALL  = 2.5;
+FLOOR = 2.5;
+TOP   = 1.5;            // Deckel-Dach (NFC liest hindurch!)
 GAP   = 0.2;            // Spiel Deckel ↔ Unterteil (P1S sehr präzise)
 
 
 // ── Raspberry Pi 3 Model B ───────────────────────────────────
-PI_W   = 85;            // Platinen-Breite  (X)
-PI_D   = 56;            // Platinen-Tiefe   (Y)
-PI_PCB = 1.4;           // Platinenstärke
+PI_W   = 85;
+PI_D   = 56;
+PI_PCB = 1.4;
 
 // Montagelöcher: Rechteck 58 × 49 mm, 3.5 mm vom Rand (*)
-PI_HX1 = 3.5;   PI_HX2 = 61.5;     // 3.5 + 58
-PI_HY1 = 3.5;   PI_HY2 = 52.5;     // 3.5 + 49
+PI_HX1 = 3.5;   PI_HX2 = 61.5;
+PI_HY1 = 3.5;   PI_HY2 = 52.5;
 
-STAND_H  = 4.0;         // Höhe Abstandshalter (Luft unter dem Pi)
-STAND_OD = 6.0;         // Außendurchmesser
-STAND_ID = 2.3;         // Loch für M2.5-Schraube (selbstschneidend)
+STAND_H  = 4.0;
+STAND_OD = 6.0;
+STAND_ID = 2.3;        // M2.5 selbstschneidend
 
 
 // ── ACR1252U NFC-Reader ──────────────────────────────────────
-RDR_W = 98;             // Reader-Breite  (X)
-RDR_D = 65;             // Reader-Tiefe   (Y)
-RDR_H = 12.8;           // Reader-Höhe    (Z)   ← lt. Datenblatt
-RDR_R = 5;              // Eckenradius der Lese-Mulde
+RDR_W = 98;
+RDR_D = 65;
+RDR_H = 12.8;          // lt. Datenblatt
+RDR_R = 5;
 
 
-// ── Innenraum (muss Pi UND Reader fassen) ────────────────────
-INNER_W = 102;          // > RDR_W (98) und > PI_W (85)
-INNER_D = 70;           // > RDR_D (65) und > PI_D (56)
-INNER_H = 21;           // Höhe für Pi + höchste Bauteile (USB/LAN ~13.5)
+// ── UNTERTEIL (schmal, nur für den Pi) ───────────────────────
+INNER_W = 89;          // Pi 85 + 2 mm Spiel je Seite
+INNER_D = 60;          // Pi 56 + 2 mm Spiel je Seite
+INNER_H = 21;          // Platz für höchste Bauteile (USB/LAN ~13.5)
 
-OUTER_W = INNER_W + 2*WALL;     // 107
-OUTER_D = INNER_D + 2*WALL;     //  75
-OUTER_H = FLOOR + INNER_H;      //  23.5
+OUTER_W = INNER_W + 2*WALL;     // 94
+OUTER_D = INNER_D + 2*WALL;     // 65
+OUTER_H = FLOOR + INNER_H;      // 23.5
 
-// Pi in die VORDER-RECHTS-Ecke schieben, damit die häufig
-// genutzten Anschlüsse direkt an den Wänden liegen:
-//   · rechte Schmalseite  (X=85-Kante): 4×USB + Ethernet
-//   · vordere Längsseite  (Y=0-Kante) : Power / HDMI / Audio
-PI_GAP = 2.0;
-PI_X = INNER_W - PI_W - PI_GAP;       // 15  (links bleibt 15 mm, SD-Seite)
-PI_Y = PI_GAP;                        //  2  (vorne bündig)
-
-// Pi-Ursprung in Welt-Koordinaten
-OX = WALL + PI_X;       // 17.5
-OY = WALL + PI_Y;       //  4.5
-// Oberkante Platine
+PI_X = (INNER_W - PI_W) / 2;    // 2  (Pi zentriert)
+PI_Y = (INNER_D - PI_D) / 2;    // 2
+OX = WALL + PI_X;               // 4.5  Pi-Ursprung in Welt-Koord.
+OY = WALL + PI_Y;               // 4.5
 PCB_TOP = FLOOR + STAND_H + PI_PCB;   // 7.9
 
 
-// ── Deckel mit Außenrock ─────────────────────────────────────
-SKIRT_T = 2.0;          // Wandstärke Rock
-SKIRT_H = 8.0;          // Rock greift 8 mm über das Unterteil
-SHELF   = 2.0;          // Boden der Lese-Mulde (Reader ruht darauf)
-RDR_POCKET = RDR_H + 1.0;            // Mulde minimal höher als Reader
+// ── DECKEL (breiter, hält den Reader) ────────────────────────
+SKIRT_H    = 8.0;              // Rock greift 8 mm über das Unterteil
+POCKET_WALL = 2.5;            // Wand um die Reader-Mulde
+RDR_POCKET = RDR_H + 0.5;     // Muldentiefe (Reader + bisschen Luft)
 
-LID_W = OUTER_W + 2*(SKIRT_T + GAP); // 111.8
-LID_D = OUTER_D + 2*(SKIRT_T + GAP); //  79.8
-LID_H = SKIRT_H + SHELF + RDR_POCKET + TOP;   // 8+2+13.8+1.5 = 25.3
+pocket_w   = RDR_W + 1;        // 99  Reader-Mulde (etwas Spiel)
+pocket_d   = RDR_D + 1;        // 66
+skirt_cav_w = OUTER_W + 2*GAP; // 94.4  Unterteil rutscht hier hinein
+skirt_cav_d = OUTER_D + 2*GAP; // 65.4
+
+LID_W = pocket_w + 2*POCKET_WALL;   // 104
+LID_D = pocket_d + 2*POCKET_WALL;   // 71
+LID_H = SKIRT_H + RDR_POCKET + TOP; // 8 + 13.3 + 1.5 = 22.8
+
+// Auflage-Leiste für den Reader = Differenz Mulde ↔ Rock-Hohlraum:
+//   X: (99 - 94.4)/2 = 2.3 mm je Seite  → Reader ruht auf 2 Leisten
+//   (Y-Leiste ist schmal; Reader liegt sicher auf den X-Leisten)
 
 
 // ── Hilfsfunktionen ──────────────────────────────────────────
@@ -118,37 +122,32 @@ module standoff(h) {
 // ── UNTERTEIL ────────────────────────────────────────────────
 module bottom() {
     difference() {
-        // Außenkörper
         rbox(OUTER_W, OUTER_D, OUTER_H, r = 4);
 
         // Innenraum
         translate([WALL, WALL, FLOOR])
             cube([INNER_W, INNER_D, OUTER_H]);
 
-        // ── Anschlüsse VORNE (Y = 0): Power · HDMI · Audio ──── (*)
-        // micro-USB Power
-        translate([OX + 5,  -0.1, PCB_TOP - 2]) cube([10, WALL+0.2, 8]);
-        // HDMI
-        translate([OX + 24, -0.1, PCB_TOP - 2]) cube([17, WALL+0.2, 8]);
-        // 3.5-mm-Klinke
-        translate([OX + 49, -0.1, PCB_TOP - 2]) cube([9,  WALL+0.2, 8]);
+        // ── VORNE (Y=0): micro-USB · HDMI · Audio ──────────── (*)
+        translate([OX + 5.6,  -0.1, PCB_TOP - 2]) cube([10, WALL+0.2, 8]); // Power
+        translate([OX + 23.5, -0.1, PCB_TOP - 2]) cube([17, WALL+0.2, 8]); // HDMI
+        translate([OX + 49,   -0.1, PCB_TOP - 2]) cube([9,  WALL+0.2, 8]); // Klinke
 
-        // ── Anschlüsse RECHTS (X = 85-Kante): 4×USB + LAN ───── (*)
-        // großes Fenster über die ganze Anschluss-Zone
-        translate([OUTER_W - WALL - 0.1, OY + 2, PCB_TOP - 2])
-            cube([WALL + 0.2, PI_D - 4, 14]);
+        // ── RECHTS (X=85-Kante): 4×USB + Ethernet ──────────── (*)
+        translate([OUTER_W - WALL - 0.1, OY + 4, PCB_TOP - 2])
+            cube([WALL + 0.2, PI_D - 8, 14]);
 
-        // ── microSD LINKS (X = 0-Kante) ──────────────────────── (*)
-        translate([-0.1, OY + 21, FLOOR + 1])
-            cube([WALL + 0.2, 14, 4]);
+        // ── LINKS (X=0-Kante): microSD mittig (Rückseite) ──── (*)
+        translate([-0.1, OY + 21, FLOOR + 1.5])
+            cube([WALL + 0.2, 14, 5]);
 
-        // ── Lüftungsschlitze hintere Wand ────────────────────
-        for (i = [0:4])
-            translate([OUTER_W/2 - 30 + i*13, OUTER_D - WALL - 0.1, OUTER_H - 13])
-                cube([7, WALL + 0.2, 9]);
+        // ── Lüftungsschlitze hintere Wand (unter dem Rock) ───
+        for (i = [0:3])
+            translate([OUTER_W/2 - 22 + i*13, OUTER_D - WALL - 0.1, PCB_TOP])
+                cube([7, WALL + 0.2, 6]);
     }
 
-    // ── Abstandshalter (0.5 mm in den Boden, sauberer Union) ──
+    // Abstandshalter (0.5 mm in den Boden → sauberer Union)
     sz = FLOOR - 0.5;
     sh = STAND_H + 0.5;
     translate([OX + PI_HX1, OY + PI_HY1, sz]) standoff(sh);
@@ -159,51 +158,40 @@ module bottom() {
 
 
 // ── DECKEL ───────────────────────────────────────────────────
-//  Aufbau von unten nach oben:
-//    z 0 … SKIRT_H            Rock (greift über das Unterteil)
-//    z SKIRT_H … +SHELF       Zwischenboden (Reader ruht darauf)
-//    z … +RDR_POCKET          Lese-Mulde (Reader liegt drin, Antenne oben)
-//    z … +TOP                 Dach (NFC liest durch 1.5 mm PLA)
+//  Querschnitt (Einbaulage – Dach oben, Rock unten):
 //
-//      ┌───── Karte drauflegen ─────┐  z = LID_H
-//      │   Dach 1.5 mm              │
-//      │ ┌───────────────────────┐ │  Lese-Mulde
-//      │ │   ACR1252U (face up)  │ │
-//      │ └───────────────────────┘ │  Zwischenboden
-//    ┌─┘                         └─┐
-//    │ Rock                       │  z = 0
-//    └─────────────────────────────┘
+//      ┌──────── Karte drauflegen ────────┐  z = LID_H (22.8)
+//      │  Dach 1.5 mm  (NFC liest durch)  │
+//      │ ┌──────────────────────────────┐ │  Reader-Mulde
+//      │ │      ACR1252U  (face up)      │ │  (RDR_POCKET tief)
+//      │ ╞══╡ Auflage-Leiste 2.3 mm  ╞══╡ │  z = SKIRT_H (8)
+//      │ │     Rock-Hohlraum            │ │  ← Unterteil rutscht hier rein
+//    ──┘ └──────────────────────────────┘ └──  z = 0  (Rock-Unterkante)
 //
 module lid() {
-    skirt_cav_w = OUTER_W + 2*GAP;   // Unterteil rutscht hier hinein
-    skirt_cav_d = OUTER_D + 2*GAP;
-
-    pocket_w = RDR_W + 1;            // Reader-Mulde (etwas Spiel)
-    pocket_d = RDR_D + 1;
-    px = (LID_W - pocket_w) / 2;     // zentriert
-    py = (LID_D - pocket_d) / 2;
-
-    pocket_z0 = SKIRT_H + SHELF;     // Boden der Mulde (Reader-Auflage)
+    px = (LID_W - pocket_w) / 2;          // 2.5  Mulde zentriert
+    py = (LID_D - pocket_d) / 2;          // 2.5
+    sx = (LID_W - skirt_cav_w) / 2;       // 4.8  Rock-Hohlraum zentriert
+    sy = (LID_D - skirt_cav_d) / 2;       // 2.8
 
     difference() {
         rbox(LID_W, LID_D, LID_H, r = 5);
 
-        // 1) Rock-Hohlraum: Unterteil schiebt sich hinein (von unten)
-        translate([SKIRT_T, SKIRT_T, -0.1])
+        // 1) Rock-Hohlraum (von unten): Unterteil schiebt sich hinein
+        translate([sx, sy, -0.1])
             cube([skirt_cav_w, skirt_cav_d, SKIRT_H + 0.1]);
 
-        // 2) Lese-Mulde für den Reader (Dach von TOP bleibt stehen)
-        //    Höhe = RDR_POCKET → endet TOP (1.5 mm) unter der Deckeloberseite
-        translate([px, py, pocket_z0])
+        // 2) Reader-Mulde (über der Auflage-Leiste, Dach bleibt stehen)
+        translate([px, py, SKIRT_H])
             rbox(pocket_w, pocket_d, RDR_POCKET + 0.01, r = RDR_R);
 
-        // 3) Kabel-Durchführung: Reader-USB nach unten zum Pi
-        translate([LID_W/2 - 8, py + 4, SKIRT_H - 0.1])
-            cube([16, 10, SHELF + 0.2]);
+        // 3) Kabel-Aussparung: Reader-USB nach unten ins Unterteil
+        translate([LID_W/2 - 8, py - 0.1, SKIRT_H - 4])
+            cube([16, POCKET_WALL + 0.2, 4 + 0.2]);
 
-        // 4) Karten-Griffmulde: Daumen-Aussparung am Rand der Mulde
-        translate([LID_W/2 - 12, py - 0.1, LID_H - 4])
-            cube([24, 8, 4.1]);
+        // 4) Karten-Griffmulde im Dach (Daumen-Aussparung vorne)
+        translate([LID_W/2 - 13, -0.1, LID_H - 3])
+            cube([26, 11, 3.1]);
     }
 }
 
@@ -214,8 +202,7 @@ if (PART == "bottom") {
 } else if (PART == "lid") {
     lid();
 } else {
-    color("SteelBlue", 0.9) bottom();
-    // Deckel daneben legen (nicht gedreht – so wird er gedruckt)
+    color("SteelBlue",     0.9) bottom();
     translate([LID_W + 20, 0, 0])
         color("LightSkyBlue", 0.9) lid();
 }
