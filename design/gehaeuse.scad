@@ -7,9 +7,18 @@
 //    · Deckel     : ACR1252U liegt OBEN eingelassen, Karte drauflegen
 //                   Deckel stülpt sich mit Außenrock über das Unterteil
 //
-//  Druck: PLA · 0.2 mm · 3 Perimeter · 20 % Infill · ohne Support
-//  Deckel zum Slicen NICHT drehen – Lese-Mulde zeigt nach oben,
-//  Rock zeigt nach unten (überhängt 8 mm, druckbar ohne Support).
+//  ── Bambu Lab P1S – empfohlene Einstellungen (Bambu Studio) ──
+//  Filament : PLA (Standard)  oder  PETG (steifer, wärmebeständiger)
+//  Profil   : 0.20 mm Standard
+//  Wände    : 3
+//  Infill   : 20 % (Gyroid)
+//  Support  : KEIN Support nötig
+//  Plate    : Engineering Plate  oder  Cool Plate
+//
+//  Druckreihenfolge:
+//    1. Unterteil: flache Seite aufs Druckbett, keine Rotation
+//    2. Deckel   : flache Seite (Rock-Rand) aufs Druckbett,
+//                  Lese-Mulde zeigt nach OBEN → kein Support
 //
 //  STL-Export: PART = "bottom"  bzw.  "lid"  setzen → F6 → STL.
 //
@@ -25,7 +34,7 @@ PART = "both";          // "bottom" | "lid" | "both"
 WALL  = 2.5;            // Seitenwände Unterteil
 FLOOR = 2.5;            // Boden Unterteil
 TOP   = 1.5;            // Deckel-Dach über dem Reader (NFC liest durch!)
-GAP   = 0.4;            // Spiel Deckel ↔ Unterteil
+GAP   = 0.2;            // Spiel Deckel ↔ Unterteil (P1S sehr präzise)
 
 
 // ── Raspberry Pi 3 Model B ───────────────────────────────────
