@@ -204,16 +204,30 @@ sudo systemctl enable --now navidrome-nfc-web
 
 ## Gehäuse (3D-Druck)
 
-Im Ordner `design/` liegt eine parametrische [OpenSCAD](https://openscad.org/)-Datei für ein Gehäuse:
+Im Ordner `design/` liegt eine parametrische [OpenSCAD](https://openscad.org/)-Datei für ein Gehäuse im Toniebox-Stil:
 
-- **Unterteil**: Raspberry Pi 3B auf Abstandshaltern, Port-Ausschnitte für Power / HDMI / Audio / USB / SD
-- **Deckel**: ACR1252U liegt oben eingelassen → Karten einfach drauflegen
+- **Unterteil**: Raspberry Pi 3B auf 4 Abstandshaltern (M2.5), Port-Ausschnitte für Power / HDMI / Audio / USB / Ethernet / microSD, Lüftungsschlitze
+- **Deckel**: ACR1252U liegt oben *face-up* in einer Mulde → Karte einfach drauflegen, NFC liest durch 1,5 mm Deckeldach. Der Deckel stülpt sich mit einem Außenrock über das Unterteil.
+
+Maße nach Datenblatt:
+
+| Teil | Maß |
+|------|-----|
+| ACR1252U | 98 × 65 × 12,8 mm |
+| Pi 3B Platine | 85 × 56 mm |
+| Pi Montagelöcher | Rechteck 58 × 49 mm, 3,5 mm vom Rand (M2.5) |
+
+### STL erzeugen
 
 ```
-design/gehaeuse.scad  →  in OpenSCAD öffnen → F6 rendern → als STL exportieren
+design/gehaeuse.scad  →  in OpenSCAD öffnen
+PART = "bottom"  → F6 rendern → als STL exportieren
+PART = "lid"     → F6 rendern → als STL exportieren
 ```
 
-> Maße vor dem Druck mit Messschieber am eigenen Pi prüfen – steht als Kommentar in der Datei.
+> **Vor dem Druck:** Die mit `(*)` markierten Port-Positionen in der `.scad`-Datei mit dem Messschieber am eigenen Pi prüfen. Passt das Spiel zwischen Deckel und Unterteil nicht, den Parameter `GAP` in 0,1-mm-Schritten anpassen.
+
+Die fertige Druckanleitung für den Bambu Lab P1S liegt in [`design/DRUCKANLEITUNG.md`](design/DRUCKANLEITUNG.md).
 
 ---
 
