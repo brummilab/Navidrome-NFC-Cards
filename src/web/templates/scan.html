@@ -7,32 +7,51 @@
   <div class="col-md-6">
     <h1 class="h3 mb-4"><i class="bi bi-wifi me-2"></i>Karte scannen</h1>
 
-    <div class="card shadow-sm">
+    <div class="card shadow-sm mb-4">
       <div class="card-body text-center py-5">
-        <div id="scan-spinner" class="mb-3">
-          <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem">
+        <div id="scan-spinner">
+          <div class="spinner-border text-primary mb-3" role="status" style="width:3rem;height:3rem">
             <span class="visually-hidden">Warte auf Karte…</span>
           </div>
+          <p class="text-muted mb-0">NFC-Leser bereit — halte eine Karte ran</p>
         </div>
-        <p class="text-muted mb-2">NFC-Leser bereit — halte eine Karte ran</p>
-        <div id="uid-display" class="d-none mt-3">
+
+        <div id="uid-display" class="d-none">
           <i class="bi bi-check-circle-fill text-success fs-2 mb-2 d-block"></i>
-          <p class="mb-1 text-muted small">Karten-UID:</p>
-          <code id="uid-value" class="fs-5 fw-bold"></code>
+          <p class="text-muted small mb-1">Karten-UID:</p>
+          <code id="uid-value" class="fs-5 fw-bold d-block mb-1"></code>
+          <p id="ndef-line" class="text-muted small mb-0 d-none">
+            NDEF: <code id="ndef-value"></code>
+          </p>
         </div>
       </div>
     </div>
 
-    <div id="assign-section" class="mt-4 d-none">
-      <div class="d-flex gap-2">
-        <a id="search-link" href="/search" class="btn btn-primary flex-grow-1">
-          <i class="bi bi-search me-1"></i>Musik suchen &amp; zuweisen
+    <div id="assign-section" class="d-none">
+      <div class="d-grid gap-2">
+        <a id="search-link" href="/search" class="btn btn-primary">
+          <i class="bi bi-search me-1"></i>Musik suchen &amp; per DB zuweisen
         </a>
+        <p class="text-center text-muted small my-1">— oder —</p>
+        <div class="card bg-body-secondary border-0">
+          <div class="card-body py-3 px-3">
+            <p class="small fw-semibold mb-2">
+              <i class="bi bi-pencil-square me-1"></i>Direkt auf Karte schreiben (empfohlen)
+            </p>
+            <p class="small text-muted mb-2">
+              Karte ist selbst-beschreibend, kein DB-Eintrag nötig. Format: <code>typ:id</code>
+            </p>
+            <code class="small d-block bg-dark text-light p-2 rounded">
+              python -m src.card_writer write "album:&lt;navidrome-album-id&gt;"
+            </code>
+          </div>
+        </div>
         <button id="rescan-btn" class="btn btn-outline-secondary">
-          <i class="bi bi-arrow-repeat"></i>
+          <i class="bi bi-arrow-repeat me-1"></i>Neu scannen
         </button>
       </div>
     </div>
+
   </div>
 </div>
 {% endblock %}
@@ -52,7 +71,8 @@ async function pollCard() {
       document.getElementById("uid-display").classList.remove("d-none");
       document.getElementById("uid-value").textContent = uid;
       document.getElementById("assign-section").classList.remove("d-none");
-      document.getElementById("search-link").href = `/search?uid=${encodeURIComponent(uid)}`;
+      document.getElementById("search-link").href =
+        `/search?uid=${encodeURIComponent(uid)}`;
     } else if (!uid) {
       lastUid = null;
     }

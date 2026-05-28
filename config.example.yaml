@@ -1,23 +1,24 @@
 navidrome:
-  url: http://localhost:4533
+  url: http://192.168.1.100:4533   # IP/Port des TrueNAS-Servers
   username: admin
   password: geheim
 
 playback:
-  # "mpv" = lokaler mpv-Player streamt direkt vom Navidrome-Server
-  # "jukebox" = Navidrome Subsonic Jukebox-Modus (Wiedergabe serverseitig)
+  # mpv streamt vom Navidrome-Server und gibt auf dem Pi aus
+  # (Standard für Raspberry Pi + Lautsprecher Setup)
   mode: mpv
-  mpv_options: []           # z.B. ["--volume=80", "--audio-device=alsa/default"]
+  mpv_options: []
+  # Beispiele: ["--volume=80"] oder ["--audio-device=alsa/plughw:0,0"]
 
 nfc:
-  reader_index: 0           # Index des Readers (0 = erster Reader)
-  poll_interval: 0.2        # Sekunden zwischen Karten-Abfragen
-  debounce_seconds: 5       # Selbe Karte nicht öfter als alle X Sekunden triggern
+  reader_index: 0           # 0 = erster USB-Reader (ACR1252U)
+  poll_interval: 0.2        # nur für Web-UI Polling; Daemon ist event-driven
+  debounce_seconds: 5       # selbe Karte nicht öfter als alle X Sekunden triggern
 
 web:
   host: 0.0.0.0
   port: 8080
-  secret_key: bitte-aendern  # Zufälligen Wert setzen!
+  secret_key: bitte-aendern  # zufälligen Wert setzen!
 
 data:
   db_path: data/mappings.db
