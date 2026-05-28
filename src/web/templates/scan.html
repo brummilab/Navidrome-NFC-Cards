@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Karte scannen – Navidrome NFC{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h1 class="h3 mb-4"><i class="bi bi-wifi me-2"></i>Karte scannen</h1>
+
+    <div class="card shadow-sm">
+      <div class="card-body text-center py-5">
+        <div id="scan-spinner" class="mb-3">
+          <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem">
+            <span class="visually-hidden">Warte auf Karte…</span>
+          </div>
+        </div>
+        <p class="text-muted mb-2">NFC-Leser bereit — halte eine Karte ran</p>
+        <div id="uid-display" class="d-none mt-3">
+          <i class="bi bi-check-circle-fill text-success fs-2 mb-2 d-block"></i>
+          <p class="mb-1 text-muted small">Karten-UID:</p>
+          <code id="uid-value" class="fs-5 fw-bold"></code>
+        </div>
+      </div>
+    </div>
+
+    <div id="assign-section" class="mt-4 d-none">
+      <div class="d-flex gap-2">
+        <a id="search-link" href="/search" class="btn btn-primary flex-grow-1">
+          <i class="bi bi-search me-1"></i>Musik suchen &amp; zuweisen
+        </a>
+        <button id="rescan-btn" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-repeat"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let lastUid = null;
+
+async function pollCard() {
+  try {
+    const resp = await fetch("/api/card");
+    const { uid } = await resp.json();
+
+    if (uid && uid !== lastUid) {
+      lastUid = uid;
+      document.getElementById("scan-spinner").classList.add("d-none");
+      document.getElementById("uid-display").classList.remove("d-none");
+      document.getElementById("uid-value").textContent = uid;
+      document.getElementById("assign-section").classList.remove("d-none");
+      document.getElementById("search-link").href = `/search?uid=${encodeURIComponent(uid)}`;
+    } else if (!uid) {
+      lastUid = null;
+    }
+  } catch (e) {
+    console.warn("poll error", e);
+  }
+  setTimeout(pollCard, 400);
+}
+
+document.getElementById("rescan-btn").addEventListener("click", () => {
+  lastUid = null;
+  document.getElementById("scan-spinner").classList.remove("d-none");
+  document.getElementById("uid-display").classList.add("d-none");
+  document.getElementById("assign-section").classList.add("d-none");
+});
+
+pollCard();
+</script>
+{% endblock %}

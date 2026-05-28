@@ -1,0 +1,28 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - ./data:/app/data
+    environment:
+      - NAVIDROME_URL=${NAVIDROME_URL:-}
+      - NAVIDROME_USERNAME=${NAVIDROME_USERNAME:-}
+      - NAVIDROME_PASSWORD=${NAVIDROME_PASSWORD:-}
+      - WEB_SECRET_KEY=${WEB_SECRET_KEY:-}
+    restart: unless-stopped
+
+  reader:
+    build: .
+    command: python -m src.run_daemon
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - ./data:/app/data
+    # USB-Zugriff auf den NFC-Reader
+    privileged: true
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    depends_on:
+      - web
+    restart: unless-stopped

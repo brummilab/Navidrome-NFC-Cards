@@ -1,0 +1,23 @@
+navidrome:
+  url: http://localhost:4533
+  username: admin
+  password: geheim
+
+playback:
+  # "mpv" = lokaler mpv-Player streamt direkt vom Navidrome-Server
+  # "jukebox" = Navidrome Subsonic Jukebox-Modus (Wiedergabe serverseitig)
+  mode: mpv
+  mpv_options: []           # z.B. ["--volume=80", "--audio-device=alsa/default"]
+
+nfc:
+  reader_index: 0           # Index des Readers (0 = erster Reader)
+  poll_interval: 0.2        # Sekunden zwischen Karten-Abfragen
+  debounce_seconds: 5       # Selbe Karte nicht öfter als alle X Sekunden triggern
+
+web:
+  host: 0.0.0.0
+  port: 8080
+  secret_key: bitte-aendern  # Zufälligen Wert setzen!
+
+data:
+  db_path: data/mappings.db
