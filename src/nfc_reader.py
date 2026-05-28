@@ -49,8 +49,11 @@ def _read_ndef_text(connection) -> Optional[str]:
         if ndef_len == 0:
             return None
 
+        # max_page: aus CC gelesen (data_area_size / 4 Pages ab Page 4)
+        # NTAG213=45, NTAG215=130, NTAG216=226 – wir lesen bis ndef_len erreicht
+        max_page = 4 + data_area_size // 4
         page = next_page
-        while len(ndef_data) < ndef_len and page < 45:  # NTAG213 pages 0-44
+        while len(ndef_data) < ndef_len and page < max_page:
             chunk, sw1, _ = connection.transmit(_READ_PAGE(page))
             if sw1 != 0x90:
                 break

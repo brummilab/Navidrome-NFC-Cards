@@ -87,9 +87,17 @@ def read_ntag213_ndef(connection) -> Optional[bytes]:
 
 
 def write_ntag213_ndef(connection, ndef_bytes: bytes) -> bool:
-    """Write raw NDEF bytes to an NTAG213 card (wraps in TLV, writes CC)."""
+    """Write raw NDEF bytes to an NFC Forum Type 2 tag (NTAG213/215/216).
+    Reads actual capacity from the Capability Container on the card.
+    """
     ndef_len = len(ndef_bytes)
-    max_user_bytes = 144  # NTAG213: 36 user pages × 4 bytes
+
+    # Read Capability Container to get actual card capacity
+    cc, sw1, _ = connection.transmit(_READ_PAGE(3))
+    if sw1 == 0x90 and cc[0] == 0xE1:
+        max_user_bytes = cc[2] * 8  # e.g. 0x12*8=144 (213), 0x3E*8=496 (215)
+    else:
+        max_user_bytes = 144  # fallback: assume NTAG213
 
     # Build NDEF TLV
     if ndef_len < 0xFF:
@@ -98,7 +106,7 @@ def write_ntag213_ndef(connection, ndef_bytes: bytes) -> bool:
         tlv = bytes([0x03, 0xFF, ndef_len >> 8, ndef_len & 0xFF]) + ndef_bytes + bytes([0xFE])
 
     if len(tlv) > max_user_bytes:
-        logger.error(f"NDEF too large: {len(tlv)} bytes (NTAG213 max {max_user_bytes})")
+        logger.error(f"NDEF too large: {len(tlv)} bytes (card max {max_user_bytes})")
         return False
 
     # Pad to multiple of 4 bytes
