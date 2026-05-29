@@ -188,9 +188,9 @@ module lid() {
         translate([px, py, SKIRT_H])
             rbox(pocket_w, pocket_d, RDR_POCKET + 0.01, r = RDR_R);
 
-        // 4) Karten-Griffmulde im Dach (Daumen-Aussparung vorne)
+        // 4) Karten-Griffmulde im Dach (Daumen-Aussparung vorne, 0.1 mm vor Dach-Oberkante)
         translate([LID_W/2 - 13, -0.1, LID_H - 3])
-            cube([26, 11, 3.1]);
+            cube([26, 11, 2.9]);
     }
 }
 
