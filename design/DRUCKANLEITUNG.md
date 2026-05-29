@@ -12,8 +12,8 @@ Zwei Teile – die fertigen STL-Dateien liegen direkt im Ordner `design/`:
 
 | Datei | Beschreibung | Maße | ca. Druckzeit* |
 |-------|--------------|------|----------------|
-| [`unterteil.stl`](unterteil.stl) | Wanne, hält den Raspberry Pi | 94 × 65 × 24 mm | ~3 h |
-| [`deckel.stl`](deckel.stl) | Aufnahme für den NFC-Reader, Karte wird oben aufgelegt | 104 × 71 × 23 mm | ~3,5 h |
+| [`unterteil.stl`](unterteil.stl) | Wanne, hält den Raspberry Pi | 103 × 67 × 22,5 mm | ~3 h |
+| [`deckel.stl`](deckel.stl) | Aufnahme für den NFC-Reader, Karte wird oben aufgelegt | 108 × 72 × 25 mm | ~3,5 h |
 
 \* grobe Schätzung bei 0,2 mm / 20 % Infill – Bambu Studio zeigt den genauen Wert.
 
@@ -71,7 +71,7 @@ UNTERTEIL  (Boden unten)          DECKEL  (Dach UNTEN aufs Bett!)
 - **Unterteil**: flacher Boden auf dem Druckbett, offene Seite nach oben. (Standard, keine Drehung.)
 - **Deckel**: um **180° kippen**, sodass das **Dach (die glatte Oberseite, auf die später die Karte kommt) flach auf dem Druckbett liegt** und die Rock-Öffnung nach oben zeigt.
 
-> **Warum gekippt?** Läge der Deckel mit dem Rock auf dem Bett, müsste der Drucker das Dach als ~100 mm breite Brücke in der Luft drucken → braucht Support. Mit dem Dach nach unten gibt es nur eine winzige 2,3-mm-Auflage-Leiste als Überhang – die druckt der P1S problemlos ohne Support.
+> **Warum gekippt?** Läge der Deckel mit dem Rock auf dem Bett, müsste der Drucker das Dach als ~108 mm breite Brücke in der Luft drucken → braucht Support. Mit dem Dach nach unten gibt es nur eine schmale Neck-Leiste als Überhang – die druckt der P1S problemlos ohne Support.
 >
 > Die Dach-Oberseite bekommt dadurch die Struktur des Druckbetts (bei Textured PEI eine schöne matte Optik). Die NFC-Lesefunktion stört das nicht.
 
@@ -92,8 +92,8 @@ In Bambu Studio: Teil markieren → Taste **R** (Rotieren) → um die X-Achse 18
 
 1. **Pi einsetzen**: Raspberry Pi mit 4× M2.5-Schrauben auf die Abstandshalter im Unterteil schrauben. Anschlüsse zeigen zu den passenden Wandausschnitten (USB/LAN rechts, Power/HDMI/Audio vorne, SD-Karte links mittig).
 2. **Reader einlegen**: ACR1252U von unten in die Deckel-Mulde legen (Geräteoberseite Richtung Dach). Er ruht auf der umlaufenden Auflage-Leiste, das Dach hält ihn nach oben.
-3. **Kabel**: USB-Kabel des Readers durch die Kabel-Aussparung nach unten führen und am Pi einstecken.
-4. **Schließen**: Deckel über das Unterteil stülpen – der Rock greift 8 mm über die Wände und zentriert alles.
+3. **Kabel**: USB-Kabel des Readers durch den Rock-Hohlraum nach unten führen und am Pi einstecken.
+4. **Schließen**: Deckel über das Unterteil stülpen – der Rock greift 9 mm über die Wände und zentriert alles.
 
 **Karte abspielen:** NFC-Karte einfach oben auf den Deckel legen – der Reader liest durch das 1,5 mm dünne Dach.
 
