@@ -126,6 +126,9 @@ def lid():
         cube(sx, sy, -0.1, skirt_cav_w, skirt_cav_d, ENGAGE + 0.1),   # Rock greift über Box
         cube(nx, ny, ENGAGE, neck_w, neck_d, NECK_H + 0.01),          # Hals (Auflage-Leiste)
         pocket,                                                        # Reader-Mulde
+        cube(LID_W / 2 - 8, ny + neck_d - 0.1, ENGAGE,                # Kabel-Slot: USB-Kabel
+             16, (py + pocket_d) - (ny + neck_d) + 0.2,               # läuft hinten nach unten
+             SKIRT_H + 6 - ENGAGE),                                   # durch die Auflage-Leiste
         cube(LID_W / 2 - 13, -0.1, LID_H - 3, 26, 11, 2.9),           # Griffmulde (< 3 mm, kein Durchbruch)
     ]
     return body.difference(trimesh.boolean.union(cuts))
