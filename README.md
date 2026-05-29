@@ -228,6 +228,15 @@ Maße nach Datenblatt:
 
 > **Wichtig:** Der Deckel wird mit dem **Dach nach unten** gedruckt (Details in der Druckanleitung) – sonst wäre Support nötig. Die mit `(*)` markierten Port-Maße ggf. am eigenen Pi mit dem Messschieber prüfen.
 
+### Zusammenbau
+
+1. **Pi einsetzen**: Raspberry Pi mit 4× M2.5-Schrauben auf die Abstandshalter im Unterteil schrauben. Anschlüsse zeigen zu den passenden Wandausschnitten (USB/LAN rechts, Power/HDMI/Audio vorne, SD-Karte links mittig).
+2. **Reader einlegen**: ACR1252U von unten in die Deckel-Mulde legen (Geräteoberseite Richtung Dach). **Das feste USB-Kabel zeigt nach hinten** (zur Lüftungsseite, weg von der Griffmulde vorne) – nur dort gibt es den Kabel-Slot. Der Reader ruht auf der umlaufenden Neck-Leiste, das Dach hält ihn nach oben.
+3. **Kabel**: USB-Kabel durch den Kabel-Slot nach unten ins Unterteil führen und am Pi einstecken.
+4. **Schließen**: Deckel über das Unterteil stülpen – der Rock greift 9 mm über die Wände und zentriert alles.
+
+**Karte abspielen:** NFC-Karte oben auf den Deckel legen – der Reader liest durch das 1,5 mm dünne Dach (Lesedistanz lt. Datenblatt bis 50 mm).
+
 ---
 
 ## Docker (alternativ)
