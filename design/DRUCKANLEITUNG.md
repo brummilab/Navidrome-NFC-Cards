@@ -26,13 +26,18 @@ Beide Teile passen einzeln problemlos aufs Druckbett (256 × 256 mm).
 | Einstellung | Wert |
 |-------------|------|
 | Drucker | Bambu Lab P1S |
-| Filament | **PLA Basic** reicht – oder **PETG HF** (stabiler, wärmebeständiger) |
+| Filament | **OVERTURE PLA+** – in Bambu Studio: Filament-Dropdown → „Generic PLA" wählen (oder OVERTURE direkt suchen) |
 | Profil | **0.20 mm Standard** |
 | Wandlinien (Wall loops) | **3** |
 | Infill | **20 %**, Muster **Gyroid** |
 | Support | **AUS** – wird nicht gebraucht |
 | Brim | nur bei Haftproblemen (5 mm) |
 | Platte | Textured PEI oder Engineering Plate |
+
+> **PLA+ Tipps:**
+> - Drucktemperatur: **220 °C** Düse, **60 °C** Bett (Bambu Studio setzt das automatisch beim Generic-PLA-Profil).
+> - PLA+ haftet gut auf Textured PEI – kein Kleber nötig.
+> - Das Regenbogen-Filament wechselt die Farbe kontinuierlich. Welche Farbe wo landet hängt vom Startpunkt auf der Spule ab – einfach drucken und überraschen lassen.
 
 ---
 
