@@ -206,7 +206,7 @@ sudo systemctl enable --now navidrome-nfc-web
 
 Im Ordner `design/` liegt eine parametrische [OpenSCAD](https://openscad.org/)-Datei für ein Gehäuse im Toniebox-Stil:
 
-- **Unterteil** ([`design/unterteil.stl`](design/unterteil.stl)): reader-breit (103 × 67 mm), Pi zentriert – alle Anschlüsse (Power / HDMI / Audio / USB / Ethernet / microSD links mittig) liegen bündig an den Wänden. Pi auf 4 Abstandshaltern (M2.5), Lüftungsschlitze hinten.
+- **Unterteil** ([`design/unterteil.stl`](design/unterteil.stl)): reader-breit (103 × 67 mm), Pi zur USB/LAN-Seite ausgerichtet (2 mm Luft zur rechten Wand) – alle Anschlüsse (Power / HDMI / Audio / USB / Ethernet / microSD links mittig) liegen bündig an den Wänden. Pi auf 4 Abstandshaltern (M2.5), Lüftungsschlitze hinten.
 - **Deckel** ([`design/deckel.stl`](design/deckel.stl)): gleichmäßig breit (108 × 72 mm), hält den ACR1252U *face-up* in einer Mulde. Der Reader ruht auf einer umlaufenden Neck-Auflage-Leiste, das Dach hält ihn nach oben. Karte oben drauflegen → NFC liest durch 1,5 mm Dach. Der Deckel stülpt sich mit einem Rock 9 mm über das Unterteil.
 
 Maße nach Datenblatt:
