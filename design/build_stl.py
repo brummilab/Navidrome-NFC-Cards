@@ -93,7 +93,6 @@ def bottom():
         cube(OX + 49,   -0.1, PCB_TOP - 2, 9,  WALL + 0.2, 8),       # Klinke
         cube(OUTER_W - WALL - 0.1, OY + 4, PCB_TOP - 2,              # USB/LAN
              WALL + 0.2, PI_D - 8, 14),
-        cube(-0.1, OY + 21, FLOOR + 1.5, WALL + 0.2, 14, 5),         # microSD
     ]
     for i in range(4):                                              # Lüftung
         cuts.append(cube(OUTER_W / 2 - 22 + i * 13, OUTER_D - WALL - 0.1,

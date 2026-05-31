@@ -144,9 +144,6 @@ module bottom() {
         translate([OUTER_W - WALL - 0.1, OY + 4, PCB_TOP - 2])
             cube([WALL + 0.2, PI_D - 8, 14]);
 
-        // ── LINKS (X=0-Kante): microSD mittig (Rückseite) ──── (*)
-        translate([-0.1, OY + 21, FLOOR + 1.5])
-            cube([WALL + 0.2, 14, 5]);
 
         // ── Lüftungsschlitze hintere Wand (unter dem Rock) ───
         for (i = [0:3])
