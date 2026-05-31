@@ -69,10 +69,10 @@ OUTER_W = INNER_W + 2*WALL;     // 103
 OUTER_D = INNER_D + 2*WALL;     // 67
 OUTER_H = FLOOR + INNER_H;      // 22.5
 
-PI_X = INNER_W - PI_W - 2.0;   // 11.0  (2 mm Luft zur USB/LAN-Wand rechts)
-PI_Y = (INNER_D - PI_D) / 2;   // 3
-OX = WALL + PI_X;               // 13.5  Pi-Ursprung in Welt-Koord.
-OY = WALL + PI_Y;               // 5.5
+PI_X = INNER_W - PI_W - 2.0;       // 11.0  (2 mm Luft zur USB/LAN-Wand rechts)
+PI_Y = (INNER_D - PI_D) / 2 + 2.0; // 5.0  (+2 mm Luft zur Vorderwand, Stecker bündig)
+OX = WALL + PI_X;                   // 13.5  Pi-Ursprung in Welt-Koord.
+OY = WALL + PI_Y;                   // 7.5
 PCB_TOP = FLOOR + STAND_H + PI_PCB;   // 7.9
 
 

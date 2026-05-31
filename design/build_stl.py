@@ -34,8 +34,8 @@ OUTER_W = INNER_W + 2 * WALL          # 103
 OUTER_D = INNER_D + 2 * WALL          # 67
 OUTER_H = FLOOR + INNER_H             # 22.5
 PI_X = INNER_W - PI_W - 2.0           # 11.0  (2 mm Luft zur USB/LAN-Wand)
-PI_Y = (INNER_D - PI_D) / 2           # 3
-OX, OY = WALL + PI_X, WALL + PI_Y     # 9, 5.5
+PI_Y = (INNER_D - PI_D) / 2 + 2.0     # 5  (+2 mm Luft zur Vorderwand, Stecker bündig)
+OX, OY = WALL + PI_X, WALL + PI_Y     # 13.5, 7.5
 PCB_TOP = FLOOR + STAND_H + PI_PCB    # 7.9
 
 # Deckel
