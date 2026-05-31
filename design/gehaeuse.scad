@@ -45,7 +45,7 @@ PI_D   = 56;
 PI_PCB = 1.4;
 
 // Montagelöcher: Rechteck 58 × 49 mm, 3.5 mm vom Rand (*)
-PI_HX1 = 3.5;   PI_HX2 = 61.5;
+PI_HX1 = 23.5;  PI_HX2 = 81.5;   // 180° flip: HX gespiegelt
 PI_HY1 = 3.5;   PI_HY2 = 52.5;
 
 STAND_H  = 4.0;
@@ -69,10 +69,10 @@ OUTER_W = INNER_W + 2*WALL;     // 103
 OUTER_D = INNER_D + 2*WALL;     // 67
 OUTER_H = FLOOR + INNER_H;      // 22.5
 
-PI_X = INNER_W - PI_W - 2.0;       // 11.0  (2 mm Luft zur USB/LAN-Wand rechts)
-PI_Y = (INNER_D - PI_D) / 2 + 2.0; // 5.0  (+2 mm Luft zur Vorderwand, Stecker bündig)
-OX = WALL + PI_X;                   // 13.5  Pi-Ursprung in Welt-Koord.
-OY = WALL + PI_Y;                   // 7.5
+PI_X = 2.0;                         // USB-Ports 2 mm von linker Wand (Pi 180° gedreht)
+PI_Y = 1.0;                         // Stecker zeigen jetzt nach hinten → Luft dort nötig
+OX = WALL + PI_X;                   // 4.5
+OY = WALL + PI_Y;                   // 3.5
 PCB_TOP = FLOOR + STAND_H + PI_PCB;   // 7.9
 
 
@@ -137,10 +137,13 @@ module bottom() {
 
 
 
-        // ── Lüftungsschlitze hintere Wand (unter dem Rock) ───
-        for (i = [0:3])
-            translate([OUTER_W/2 - 22 + i*13, OUTER_D - WALL - 0.1, PCB_TOP])
-                cube([7, WALL + 0.2, 6]);
+        // ── Lüftungsschlitze linke + rechte Wand ─────────────
+        for (i = [0:3]) {
+            translate([-0.1, OUTER_D/2 - 20 + i*13, PCB_TOP])
+                cube([WALL + 0.2, 7, 6]);
+            translate([OUTER_W - WALL - 0.1, OUTER_D/2 - 20 + i*13, PCB_TOP])
+                cube([WALL + 0.2, 7, 6]);
+        }
     }
 
     // Abstandshalter (0.5 mm in den Boden → sauberer Union)
@@ -177,9 +180,8 @@ module lid() {
         translate([px, py, SKIRT_H])
             rbox(pocket_w, pocket_d, RDR_POCKET + 0.01, r = RDR_R);
 
-        // 4) Kabel-Slot: festes USB-Kabel der ACR1252U läuft hinten
-        //    mittig durch die Auflage-Leiste nach unten zum Pi
-        translate([LID_W/2 - 8, ny + neck_d - 0.1, ENGAGE])
+        // 4) Kabel-Slot: USB-Kabel links, direkt über den USB-Ports des Pi
+        translate([5, ny + neck_d - 0.1, ENGAGE])
             cube([16, (py + pocket_d) - (ny + neck_d) + 0.2, SKIRT_H + 6 - ENGAGE]);
 
         // 5) Karten-Griffmulde im Dach (Daumen-Aussparung vorne, 0.1 mm vor Dach-Oberkante)

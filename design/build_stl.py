@@ -23,7 +23,7 @@ import trimesh
 WALL, FLOOR, TOP, GAP = 2.5, 2.5, 1.5, 0.2
 
 PI_W, PI_D, PI_PCB = 85, 56, 1.4
-PI_HX1, PI_HX2, PI_HY1, PI_HY2 = 3.5, 61.5, 3.5, 52.5
+PI_HX1, PI_HX2, PI_HY1, PI_HY2 = 23.5, 81.5, 3.5, 52.5  # 180° flip: HX gespiegelt
 STAND_H, STAND_OD, STAND_ID = 4.0, 6.0, 2.3
 
 RDR_W, RDR_D, RDR_H, RDR_R = 98, 65, 12.8, 5
@@ -33,9 +33,9 @@ INNER_W, INNER_D, INNER_H = 98, 62, 20
 OUTER_W = INNER_W + 2 * WALL          # 103
 OUTER_D = INNER_D + 2 * WALL          # 67
 OUTER_H = FLOOR + INNER_H             # 22.5
-PI_X = INNER_W - PI_W - 2.0           # 11.0  (2 mm Luft zur USB/LAN-Wand)
-PI_Y = (INNER_D - PI_D) / 2 + 2.0     # 5  (+2 mm Luft zur Vorderwand, Stecker bündig)
-OX, OY = WALL + PI_X, WALL + PI_Y     # 13.5, 7.5
+PI_X = 2.0                             # USB-Ports 2 mm von linker Wand (Pi 180° gedreht)
+PI_Y = 1.0                             # Stecker zeigen jetzt nach hinten → Luft dort nötig
+OX, OY = WALL + PI_X, WALL + PI_Y     # 4.5, 3.5
 PCB_TOP = FLOOR + STAND_H + PI_PCB    # 7.9
 
 # Deckel
@@ -89,9 +89,12 @@ def bottom():
     cuts = [
         cube(WALL, WALL, FLOOR, INNER_W, INNER_D, OUTER_H),          # Innenraum
     ]
-    for i in range(4):                                              # Lüftung
-        cuts.append(cube(OUTER_W / 2 - 22 + i * 13, OUTER_D - WALL - 0.1,
-                         PCB_TOP, 7, WALL + 0.2, 6))
+    for i in range(4):                                              # Lüftung links
+        cuts.append(cube(-0.1, OUTER_D / 2 - 20 + i * 13,
+                         PCB_TOP, WALL + 0.2, 7, 6))
+    for i in range(4):                                              # Lüftung rechts
+        cuts.append(cube(OUTER_W - WALL - 0.1, OUTER_D / 2 - 20 + i * 13,
+                         PCB_TOP, WALL + 0.2, 7, 6))
 
     shell = body.difference(trimesh.boolean.union(cuts))
 
@@ -120,8 +123,8 @@ def lid():
         cube(sx, sy, -0.1, skirt_cav_w, skirt_cav_d, ENGAGE + 0.1),   # Rock greift über Box
         cube(nx, ny, ENGAGE, neck_w, neck_d, NECK_H + 0.01),          # Hals (Auflage-Leiste)
         pocket,                                                        # Reader-Mulde
-        cube(LID_W / 2 - 8, ny + neck_d - 0.1, ENGAGE,                # Kabel-Slot: USB-Kabel
-             16, (py + pocket_d) - (ny + neck_d) + 0.2,               # läuft hinten nach unten
+        cube(5, ny + neck_d - 0.1, ENGAGE,                             # Kabel-Slot: USB-Kabel
+             16, (py + pocket_d) - (ny + neck_d) + 0.2,               # links, über USB-Ports
              SKIRT_H + 6 - ENGAGE),                                   # durch die Auflage-Leiste
         cube(LID_W / 2 - 13, -0.1, LID_H - 3, 26, 11, 2.9),           # Griffmulde (< 3 mm, kein Durchbruch)
     ]
