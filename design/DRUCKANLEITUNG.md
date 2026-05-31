@@ -80,7 +80,7 @@ In Bambu Studio: Teil markieren → **R** (Rotieren) → X-Achse 180° → **P**
 - Deckel sollte sich mit leichtem Widerstand auf das Unterteil stülpen lassen. Falls er zu stramm oder zu locker sitzt, kurze Rückmeldung → ich passe die Toleranz an und schicke neue STLs.
 
 > **Hinweis Zusammenbau** (falls du auch zusammenbaust):
-> 1. NFC-Reader von unten in die Deckel-Mulde legen (glatte Seite des Readers Richtung Dach). Das **feste USB-Kabel zeigt nach hinten** (weg von der Daumen-Griffmulde an der Vorderkante) – nur dort sitzt der Kabel-Schlitz.
-> 2. Pi mit USB/LAN-Seite zur rechten Wand einsetzen, dort liegen die Wandausschnitte.
+> 1. Pi **180° gedreht** einsetzen – USB-Ports zeigen nach **links** (dort sind auch die Lüftungsschlitze).
+> 2. NFC-Reader von unten in die Deckel-Mulde legen (glatte Seite Richtung Dach). Das **feste USB-Kabel zeigt nach links** – dort sitzt der Kabel-Schlitz, direkt über den USB-Ports des Pi.
 
 Danke! 🙏

@@ -206,8 +206,8 @@ sudo systemctl enable --now navidrome-nfc-web
 
 Im Ordner `design/` liegt eine parametrische [OpenSCAD](https://openscad.org/)-Datei für ein Gehäuse im Toniebox-Stil:
 
-- **Unterteil** ([`design/unterteil.stl`](design/unterteil.stl)): reader-breit (103 × 67 mm), Pi zur USB/LAN-Seite ausgerichtet (2 mm Luft zur rechten Wand) – alle Anschlüsse (Power / HDMI / Audio / USB / Ethernet / microSD links mittig) liegen bündig an den Wänden. Pi auf 4 Abstandshaltern (M2.5), Lüftungsschlitze hinten.
-- **Deckel** ([`design/deckel.stl`](design/deckel.stl)): gleichmäßig breit (108 × 72 mm), hält den ACR1252U *face-up* in einer Mulde. Der Reader ruht auf einer umlaufenden Neck-Auflage-Leiste, das Dach hält ihn nach oben. Karte oben drauflegen → NFC liest durch 1,5 mm Dach. Der Deckel stülpt sich mit einem Rock 9 mm über das Unterteil.
+- **Unterteil** ([`design/unterteil.stl`](design/unterteil.stl)): reader-breit (103 × 67 mm), geschlossene Wände (kein Portloch – läuft über WLAN). Pi 180° gedreht, USB-Ports links (2 mm von der Wand). Lüftungsschlitze links und rechts (je 4 Stück). Pi auf 4 Abstandshaltern (M2.5).
+- **Deckel** ([`design/deckel.stl`](design/deckel.stl)): gleichmäßig breit (108 × 72 mm), hält den ACR1252U *face-up* in einer Mulde. Der Reader ruht auf einer umlaufenden Neck-Auflage-Leiste, das Dach hält ihn nach oben. Karte oben drauflegen → NFC liest durch 1,5 mm Dach. Kabel-Slot links (direkt über den USB-Ports des Pi). Der Deckel stülpt sich mit einem Rock 9 mm über das Unterteil.
 
 Maße nach Datenblatt:
 
@@ -226,13 +226,13 @@ Maße nach Datenblatt:
 | `design/build_stl.py` | STL neu erzeugen ohne OpenSCAD (`pip install numpy scipy trimesh manifold3d`) |
 | `design/DRUCKANLEITUNG.md` | Schritt-für-Schritt-Anleitung für den **Bambu Lab P1S** |
 
-> **Wichtig:** Der Deckel wird mit dem **Dach nach unten** gedruckt (Details in der Druckanleitung) – sonst wäre Support nötig. Die mit `(*)` markierten Port-Maße ggf. am eigenen Pi mit dem Messschieber prüfen.
+> **Wichtig:** Der Deckel wird mit dem **Dach nach unten** gedruckt (Details in der Druckanleitung) – sonst wäre Support nötig.
 
 ### Zusammenbau
 
-1. **Pi einsetzen**: Raspberry Pi mit 4× M2.5-Schrauben auf die Abstandshalter im Unterteil schrauben. Anschlüsse zeigen zu den passenden Wandausschnitten (USB/LAN rechts, Power/HDMI/Audio vorne, SD-Karte links mittig).
-2. **Reader einlegen**: ACR1252U von unten in die Deckel-Mulde legen (Geräteoberseite Richtung Dach). **Das feste USB-Kabel zeigt nach hinten** (zur Lüftungsseite, weg von der Griffmulde vorne) – nur dort gibt es den Kabel-Slot. Der Reader ruht auf der umlaufenden Neck-Leiste, das Dach hält ihn nach oben.
-3. **Kabel**: USB-Kabel durch den Kabel-Slot nach unten ins Unterteil führen und am Pi einstecken.
+1. **Pi einsetzen**: Raspberry Pi **180° gedreht** (USB-Ports zeigen nach links) mit 4× M2.5-Schrauben auf die Abstandshalter schrauben.
+2. **Reader einlegen**: ACR1252U von unten in die Deckel-Mulde legen (Geräteoberseite Richtung Dach). **Das feste USB-Kabel zeigt nach links** – dort sitzt der Kabel-Slot direkt über den USB-Ports des Pi. Der Reader ruht auf der umlaufenden Neck-Leiste, das Dach hält ihn nach oben.
+3. **Kabel**: USB-Kabel durch den Kabel-Slot nach unten führen und in einen USB-Port des Pi einstecken.
 4. **Schließen**: Deckel über das Unterteil stülpen – der Rock greift 9 mm über die Wände und zentriert alles.
 
 **Karte abspielen:** NFC-Karte oben auf den Deckel legen – der Reader liest durch das 1,5 mm dünne Dach (Lesedistanz lt. Datenblatt bis 50 mm).
