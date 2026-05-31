@@ -135,14 +135,6 @@ module bottom() {
         translate([WALL, WALL, FLOOR])
             cube([INNER_W, INNER_D, OUTER_H]);
 
-        // ── VORNE (Y=0): micro-USB · HDMI · Audio ──────────── (*)
-        translate([OX + 5.6,  -0.1, PCB_TOP - 2]) cube([10, WALL+0.2, 8]); // Power
-        translate([OX + 23.5, -0.1, PCB_TOP - 2]) cube([17, WALL+0.2, 8]); // HDMI
-        translate([OX + 49,   -0.1, PCB_TOP - 2]) cube([9,  WALL+0.2, 8]); // Klinke
-
-        // ── RECHTS (X-Kante): 4×USB + Ethernet ─────────────── (*)
-        translate([OUTER_W - WALL - 0.1, OY + 4, PCB_TOP - 2])
-            cube([WALL + 0.2, PI_D - 8, 14]);
 
 
         // ── Lüftungsschlitze hintere Wand (unter dem Rock) ───
