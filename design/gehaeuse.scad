@@ -135,7 +135,9 @@ module bottom() {
         translate([WALL, WALL, FLOOR])
             cube([INNER_W, INNER_D, OUTER_H]);
 
-
+        // ── HINTEN (Y=OUTER_D): Stromanschluss (Pi 180° gedreht) ──
+        translate([OX + PI_W - 15.6, OUTER_D - WALL - 0.1, PCB_TOP - 2])
+            cube([10, WALL + 0.2, 8]);
 
         // ── Lüftungsschlitze linke + rechte Wand ─────────────
         for (i = [0:3]) {

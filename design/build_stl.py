@@ -88,6 +88,8 @@ def bottom():
 
     cuts = [
         cube(WALL, WALL, FLOOR, INNER_W, INNER_D, OUTER_H),          # Innenraum
+        cube(OX + PI_W - 15.6, OUTER_D - WALL - 0.1,                  # Stromanschluss (hinten,
+             PCB_TOP - 2, 10, WALL + 0.2, 8),                         # Pi 180° gedreht)
     ]
     for i in range(4):                                              # Lüftung links
         cuts.append(cube(-0.1, OUTER_D / 2 - 20 + i * 13,
