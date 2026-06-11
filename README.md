@@ -206,8 +206,8 @@ sudo systemctl enable --now navidrome-nfc-web
 
 Im Ordner `design/` liegt eine parametrische [OpenSCAD](https://openscad.org/)-Datei für ein Gehäuse im Toniebox-Stil:
 
-- **Unterteil** ([`design/unterteil.stl`](design/unterteil.stl)): reader-breit (103 × 67 mm), geschlossene Wände (kein Portloch – läuft über WLAN). Pi 180° gedreht, USB-Ports links (2 mm von der Wand). Lüftungsschlitze links und rechts (je 4 Stück). Pi auf 4 Abstandshaltern (M2.5).
-- **Deckel** ([`design/deckel.stl`](design/deckel.stl)): gleichmäßig breit (108 × 72 mm), hält den ACR1252U *face-up* in einer Mulde. Der Reader ruht auf einer umlaufenden Neck-Auflage-Leiste, das Dach hält ihn nach oben. Karte oben drauflegen → NFC liest durch 1,5 mm Dach. Kabel-Slot links (direkt über den USB-Ports des Pi). Der Deckel stülpt sich mit einem Rock 9 mm über das Unterteil.
+- **Unterteil** ([`design/unterteil.stl`](design/unterteil.stl)): reader-breit (103 × 67 mm). Pi 180° gedreht, USB-Seite mit 10 mm Abstand zur Wand – genug Platz, damit das feste USB-Kabel des NFC-Readers komplett im Gehäuse an einen USB-Port des Pi angeschlossen werden kann (kein Wanddurchbruch dafür nötig). Einziger Wanddurchbruch: Stromanschluss in der Rückwand fürs Pi-Netzteil. Lüftungsschlitze links und rechts (je 4 Stück), läuft über WLAN. Pi auf 4 Abstandshaltern (M2.5).
+- **Deckel** ([`design/deckel.stl`](design/deckel.stl)): gleichmäßig breit (108 × 72 mm), hält den ACR1252U *face-up* in einer Mulde. Der Reader ruht auf einer umlaufenden Neck-Auflage-Leiste, das Dach hält ihn nach oben. Karte oben drauflegen → NFC liest durch 1,5 mm Dach. Ein Kabel-Kanal an einer Ecke der Reader-Mulde führt das feste USB-Kabel des Readers nach unten ins Gehäuseinnere zum Pi. Der Deckel stülpt sich mit einem Rock 9 mm über das Unterteil.
 
 Maße nach Datenblatt:
 
@@ -230,10 +230,10 @@ Maße nach Datenblatt:
 
 ### Zusammenbau
 
-1. **Pi einsetzen**: Raspberry Pi **180° gedreht** (USB-Ports zeigen nach links) mit 4× M2.5-Schrauben auf die Abstandshalter schrauben.
-2. **Reader einlegen**: ACR1252U von unten in die Deckel-Mulde legen (Geräteoberseite Richtung Dach). **Das feste USB-Kabel zeigt nach links** – dort sitzt der Kabel-Slot direkt über den USB-Ports des Pi. Der Reader ruht auf der umlaufenden Neck-Leiste, das Dach hält ihn nach oben.
-3. **Kabel**: USB-Kabel durch den Kabel-Slot nach unten führen und in einen USB-Port des Pi einstecken.
-4. **Schließen**: Deckel über das Unterteil stülpen – der Rock greift 9 mm über die Wände und zentriert alles.
+1. **Pi einsetzen**: Raspberry Pi **180° gedreht** (USB-Ports zeigen nach links, 10 mm Platz zur Wand) mit 4× M2.5-Schrauben auf die Abstandshalter schrauben.
+2. **Reader einlegen**: ACR1252U von unten in die Deckel-Mulde legen (Geräteoberseite Richtung Dach). Der Reader ruht auf der umlaufenden Neck-Leiste, das Dach hält ihn nach oben. Das feste USB-Kabel durch den Kabel-Kanal an der Mulden-Ecke nach unten ins Gehäuseinnere führen.
+3. **Kabel anschließen**: Im Inneren das USB-Kabel des Readers in einen USB-Port des Pi einstecken (Platz dafür ist links neben dem Pi).
+4. **Schließen**: Deckel über das Unterteil stülpen – der Rock greift 9 mm über die Wände und zentriert alles. Das Stromkabel des Pi durch den Durchbruch in der Rückwand anschließen.
 
 **Karte abspielen:** NFC-Karte oben auf den Deckel legen – der Reader liest durch das 1,5 mm dünne Dach (Lesedistanz lt. Datenblatt bis 50 mm).
 
