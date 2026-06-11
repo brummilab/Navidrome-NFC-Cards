@@ -69,7 +69,7 @@ OUTER_W = INNER_W + 2*WALL;     // 103
 OUTER_D = INNER_D + 2*WALL;     // 67
 OUTER_H = FLOOR + INNER_H;      // 22.5
 
-PI_X = 2.0;                         // USB-Ports 2 mm von linker Wand (Pi 180° gedreht)
+PI_X = 10.0;                        // USB-Ports 10 mm von linker Wand: Platz fürs Reader-Kabel
 PI_Y = 1.0;                         // Stecker zeigen jetzt nach hinten → Luft dort nötig
 OX = WALL + PI_X;                   // 4.5
 OY = WALL + PI_Y;                   // 3.5
@@ -186,9 +186,9 @@ module lid() {
         translate([5, ny + neck_d - 0.1, ENGAGE])
             cube([16, (py + pocket_d) - (ny + neck_d) + 0.2, SKIRT_H + 6 - ENGAGE]);
 
-        // 5) Karten-Griffmulde im Dach (Daumen-Aussparung vorne, 0.1 mm vor Dach-Oberkante)
+        // 5) Karten-Griffmulde im Dach (Daumen-Aussparung vorne, 0.4 mm Restwand)
         translate([LID_W/2 - 13, -0.1, LID_H - 3])
-            cube([26, 11, 2.9]);
+            cube([26, 11, 2.6]);
     }
 }
 
